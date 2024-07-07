@@ -113,6 +113,16 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// Handler function for Vercel serverless function
+func Handler(w http.ResponseWriter, r *http.Request) {
+	switch r.URL.Path {
+	case "/api/hello":
+		helloHandler(w, r)
+	default:
+		http.NotFound(w, r)
+	}
+}
+
 func main() {
 	// Load environment variables from .env file
 	err := godotenv.Load()
@@ -125,10 +135,8 @@ func main() {
 		port = "3000" // Default port if PORT environment variable is not set
 	}
 
-	http.HandleFunc("/api/hello", helloHandler)
-
 	log.Printf("Server listening on port %s", port)
-	err = http.ListenAndServe(":"+port, nil)
+	err = http.ListenAndServe(":"+port, http.HandlerFunc(Handler))
 	if err != nil {
 		log.Fatalf("Error starting server: %v", err)
 	}
