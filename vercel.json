@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "main.go",
+        "use": "@vercel/go"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/hello",
+        "dest": "main.go"
+      }
+    ],
+    "env": {
+      "WEATHER_API_KEY":  "@WEATHER_API_KEY"
+    }
+  }
+  
