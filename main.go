@@ -1,10 +1,11 @@
-package handler
+package main
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -53,10 +54,11 @@ func getLocation(ip string) (string, error) {
 }
 
 func getWeather(city string, apiKey string) (float64, error) {
-	url := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=%s", city, apiKey)
-	log.Printf("Fetching weather data from URL: %s", url) // Log the request URL
+	encodedCity := url.QueryEscape(city)
+	requestURL := fmt.Sprintf("https://api.openweathermap.org/data/2.5/weather?q=%s&units=metric&appid=%s", encodedCity, apiKey)
+	log.Printf("Fetching weather data from URL: %s", requestURL) // Log the request URL
 
-	resp, err := http.Get(url)
+	resp, err := http.Get(requestURL)
 	if err != nil {
 		return 0, fmt.Errorf("failed to fetch weather data: %v", err)
 	}
@@ -75,7 +77,7 @@ func getWeather(city string, apiKey string) (float64, error) {
 	return weather.Main.Temp, nil
 }
 
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
+func helloHandler(w http.ResponseWriter, r *http.Request) {
 	visitorName := r.URL.Query().Get("visitor_name")
 	if visitorName == "" {
 		visitorName = "Guest"
@@ -125,7 +127,7 @@ func main() {
 		port = "3000" // Default port if PORT environment variable is not set
 	}
 
-	http.HandleFunc("/api/hello", HelloHandler)
+	http.HandleFunc("/api/hello", helloHandler)
 
 	log.Printf("Server listening on port %s", port)
 	err = http.ListenAndServe(":"+port, nil)
