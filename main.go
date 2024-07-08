@@ -1,5 +1,3 @@
-// main.go
-
 package main
 
 import (
@@ -8,11 +6,9 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/joshua468/weather-location-api-master/handler"
 )
 
 func main() {
-	// Load environment variables from .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file: %v", err)
@@ -22,8 +18,6 @@ func main() {
 	if port == "" {
 		port = "3000" // Default port if PORT environment variable is not set
 	}
-
-	http.HandleFunc("/api/hello", handler.HelloHandler)
 
 	log.Printf("Server listening on port %s", port)
 	err = http.ListenAndServe(":"+port, nil)
