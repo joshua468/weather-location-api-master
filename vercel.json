@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "main.go",
+      "src": "api/hello.go",
       "use": "@vercel/go"
     }
   ],
   "routes": [
     {
       "src": "/api/hello",
-      "dest": "main.go"
+      "dest": "api/hello.go"
     }
   ]
 }
