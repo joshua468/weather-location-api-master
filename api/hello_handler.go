@@ -74,7 +74,7 @@ func getWeather(city string, apiKey string) (float64, error) {
 	return weather.Main.Temp, nil
 }
 
-func HelloHandler(w http.ResponseWriter, r *http.Request) {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	visitorName := r.URL.Query().Get("visitor_name")
 	if visitorName == "" {
 		visitorName = "Guest"
